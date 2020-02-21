@@ -21,6 +21,12 @@ class IoTRequest;
 class IoTRequestPrivate;
 typedef std::shared_ptr<IoTRequestPrivate> IoTRequestPrivatePtr;
 
+enum DEFINITION{
+    VIDEO_DEFINITION_FL = 0, //流畅
+    VIDEO_DEFINITION_SD = 1, //标清
+    VIDEO_DEFINITION_HD = 2, //高清
+};
+
 class IOTVIDEOSDKDLL_API IoTVideoSdk{
  public:
     /**
@@ -101,7 +107,7 @@ public:
     virtual ~IoTVideoPlayer();
 
 public:
-    void setDataResource(uint64_t deviceId, int callType);
+    void setDataResource(uint64_t deviceId, int callType, int definition);
 
     void prepare();
 

@@ -82,8 +82,12 @@ void Widget::showPlayerStatus_slot(QString text)
 
 void Widget::initDialog()
 {
-    setWindowTitle("IoTVideoPlayer");
-    ui->edtDevId->setText("42949672978");
+#ifdef DEBUG_TEST
+    setWindowTitle("IoTVideoPlayer test V1.0.0.1");
+#else
+    setWindowTitle("IoTVideoPlayer V1.0.0.2");
+ #endif
+    //ui->edtDevId->setText("42949672978");
     m_pIotVideoSdk = IoTVideoSdk::getInstance();
     m_pIotVideoPlayer = new IoTVideoPlayer;
     HWND hShowWind = (HWND)ui->videoShowWind->winId();
@@ -92,6 +96,7 @@ void Widget::initDialog()
     m_pAudioRneder = new AudioRenderCase;
     m_pIotVideoPlayer->setAudioRender(m_pAudioRneder);
     m_pIotVideoPlayer->setStatusListener(std::bind(&Widget::playerStatusListener,this,std::placeholders::_1));
+    m_pIotVideoPlayer->setErrorListener(std::bind(&Widget::playerErrorListener,this,std::placeholders::_1));
 }
 
 void Widget::userRegister()
@@ -151,6 +156,12 @@ void Widget::playerStatusListener(int status)
     }
 }
 
+void Widget::playerErrorListener(int err)
+{
+    QString text = QStringLiteral("播放失败，错误码:") + QString("%1").arg(err);
+    emit showPlayerStatus_sig(text);
+}
+
 Widget::~Widget()
 {
     if(nullptr != m_pIotVideoPlayer)
@@ -180,7 +191,7 @@ void Widget::on_btnVideoPlay_clicked()
         printf("%s device id is 0\n", __FUNCTION__);
         return;
     }
-    m_pIotVideoPlayer->setDataResource(u64DevID, 1);
+    m_pIotVideoPlayer->setDataResource(u64DevID, 1,VIDEO_DEFINITION_HD);
     m_pIotVideoPlayer->play();
 }
 

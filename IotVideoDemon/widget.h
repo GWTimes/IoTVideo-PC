@@ -5,6 +5,7 @@
 #include "IoTVideoPlayer.h"
 #include "videorendercase.h"
 #include "audiorendercase.h"
+//#define DEBUG_TEST
 namespace Ui {
 class Widget;
 }
@@ -24,6 +25,8 @@ public:
     // 回调函数
     void ModelDataResp(std::string devid, std::string msg);
     void playerStatusListener(int status);  //播放器状态回调
+    void playerErrorListener(int err);      //播放器错误信息回调
+
 signals:
     void showModelStatus_sig(QString text);
     void getModelDataTimeout_sig(QString devid);

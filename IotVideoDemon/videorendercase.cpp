@@ -34,9 +34,14 @@ void VideoRenderCase::frameUpdate(AVData *data)
     imageProperties.lpU = data->data1;
     imageProperties.lpV = data->data2;
     imageProperties.dwImageFormat = IMAGE_FORMAT_YV12;
-    if(DD_Draw(m_hDDrawWind,m_hShowWind,&imageProperties) != 0)
+    if(m_hDDrawWind == NULL || m_hDDrawWind == NULL)
     {
-        printf("DD_Draw error\n");
+        printf("%s m_hDDrawWind or m_hDDrawWind is null\n", __FUNCTION__);
+    }
+    DWORD dwRet = DD_Draw(m_hDDrawWind,m_hShowWind,&imageProperties);
+    if(dwRet != 0)
+    {
+        printf("DD_Draw error,dwRet=%d\n",dwRet);
     }
 }
 
